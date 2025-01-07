@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "./App";
 
 export function Movies({movies}){
 
@@ -6,12 +7,11 @@ export function Movies({movies}){
 
   return(
       <div className="box">
-            <button
-              className="btn-toggle"
+            <Button
               onClick={() => setIsOpen1((open) => !open)}
             >
               {isOpen1 ? "–" : "+"}
-            </button>
+            </Button>
             {isOpen1 && (
               <ul className="list">
                 {movies?.map((movie) => (

@@ -7,6 +7,10 @@ import { MoviesWatched } from "./MoviesWatched";
 export const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
+export function Button({children, onClick}){
+  return <button className="btn-toggle" onClick={onClick}>{children}</button>
+}
+
 export default function App() {
   
   const [movies, setMovies] = useState(tempMovieData);

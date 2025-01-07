@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { average } from "./App";
 import { WatchedList } from "./WatchedList";
+import { Button } from "./App";
+
 
 export function MoviesWatched({ watched }) {
 
@@ -12,12 +14,11 @@ export function MoviesWatched({ watched }) {
 
   return (
     <div className="box">
-        <button
-          className="btn-toggle"
+        <Button
           onClick={() => setIsOpen2((open) => !open)}
         >
           {isOpen2 ? "–" : "+"}
-        </button>
+        </Button>
         {isOpen2 && (
           <>
             <div className="summary">
