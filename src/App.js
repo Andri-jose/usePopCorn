@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { tempMovieData, tempWatchedData } from "./tempMovieData";
-import { Nav } from "./Nav";
+import { Nav, NumResults, Search, Logo } from "./Nav";
 import { Movies } from "./Movies";
 import { MoviesWatched } from "./MoviesWatched";
+
+
 
 export const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
@@ -19,7 +21,11 @@ export default function App() {
 
   return (
     <>
-       <Nav movies={movies}/>
+       <Nav movies={movies}>
+          <Logo />
+          <Search />
+          <NumResults movies={movies} />  
+       </Nav>
       <main className="main">
         <Movies movies={movies}/>
         <MoviesWatched watched={watched}/>
