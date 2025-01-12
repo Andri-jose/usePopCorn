@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { tempMovieData, tempWatchedData } from "./tempMovieData";
 import { Nav, NumResults, Search, Logo } from "./Nav";
-import { Main, Movies, MoviesWatched, WatchedList, MoviesDetail, MoviesWatchedDetail } from "./Main";
+import { Main, Box, WatchedList, MoviesDetail, MoviesWatchedDetail } from "./Main";
 
 
 
@@ -26,13 +26,13 @@ export default function App() {
           <NumResults movies={movies} />  
        </Nav>
       <Main>
-        <Movies>
+        <Box>
           <MoviesDetail movies={movies}/>
-        </Movies>
-        <MoviesWatched>
-          <WatchedList watched={watched}/>
+        </Box>
+        <Box>
           <MoviesWatchedDetail watched={watched}/>
-        </MoviesWatched>
+          <WatchedList watched={watched}/> 
+        </Box>
       </Main>
       
     </>

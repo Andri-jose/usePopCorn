@@ -12,18 +12,18 @@ export function Main({children}){
 }
 
 
-export function Movies({ children }){
+export function Box({ children }){
 
-  const [isOpen1, setIsOpen1] = useState(true);
+  const [isOpen, setIsOpen] = useState(true);
 
   return(
       <div className="box">
             <Button
-              onClick={() => setIsOpen1((open) => !open)}
+              onClick={() => setIsOpen((open) => !open)}
             >
-              {isOpen1 ? "–" : "+"}
+              {isOpen ? "–" : "+"}
             </Button>
-            {isOpen1 && ( children
+            {isOpen && ( children
              
             )}
       </div>
@@ -53,29 +53,7 @@ export function MoviesDetail({movies}){
   
 }
 
-export function MoviesWatched({ children, watched }) {
 
-  const [isOpen2, setIsOpen2] = useState(true);
-
-  
-
-  return (
-    <div className="box">
-        <Button
-          onClick={() => setIsOpen2((open) => !open)}
-        >
-          {isOpen2 ? "–" : "+"}
-        </Button>
-        {isOpen2 && (
-          <>
-            {children}
-          </>
-            )}
-          </div>
-
-  )
-  
-}
 
 export function MoviesWatchedDetail({watched}){
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
