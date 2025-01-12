@@ -2,29 +2,24 @@ import { useState } from "react";
 
 
 export function Nav({children}) {
-
-    
-
     return(
         <nav className="nav-bar">
           {children}
         </nav>
     )
-
-
+    
 } 
-
-
 
 
 export function Logo() {
   return(
   <div className="logo">
-  <span role="img">🍿</span>
-  <h1>usePopcorn</h1>
-</div>
+    <span role="img">🍿</span>
+    <h1>usePopcorn</h1>
+  </div>
   )
 }
+
 export function Search() {
 
   const [query, setQuery] = useState("");
@@ -38,6 +33,8 @@ export function Search() {
       onChange={(e) => setQuery(e.target.value)} />
   );
 }
+
+
 export function NumResults({ movies }) {
 
   return (
