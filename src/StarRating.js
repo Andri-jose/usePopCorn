@@ -3,20 +3,24 @@ import { useState } from "react";
 const containerStyle = {
     display : "flex",
     alignItems: "center",
-    gap: "16px",
-
+    width: "200px",
+    height: "100px",
+    gap : "10px"
 };
+
 
 const StarStyle = {
     width : "30px",
     height : "30px",
     display : "inline-block",
-    cursor: "pointer"
+    cursor: "pointer",
+    
 }   
 
 
 export default function StarRating({maxRating = 5}){
-    const [rating, setRating] = useState(0)
+    const [rating, setRating] = useState(0);
+    const [hover, setHover] = useState(0);
 
     function handleRating(x) {
         setRating(x);
@@ -24,20 +28,27 @@ export default function StarRating({maxRating = 5}){
 
     return(
         <div style={containerStyle}>
-            <div>
+            <div> 
                {Array.from({length: maxRating}, (_, i) => (
-                 <Star key={i} onClick={() => handleRating(i + 1)} full={rating >= i + 1} />
+                 <Star key={i} 
+                 clickRating={() => handleRating(i + 1)} 
+                 full={hover ? hover >= i + 1 : rating >= i + 1} 
+                 onHoverInn={() => setHover( i + 1)}
+                 onHoverOut={() => setHover(0)}/>
                  ))}
             </div>
-            <p>{rating || ""}</p>
+            <p>{hover || rating || ""}</p>
         </div>
        
     )
 }
 
-function Star({onClick, full}){
+function Star({clickRating, full, onHoverInn, onHoverOut}){
     return(
-        <span style={StarStyle} onClick={onClick}>
+        <span style={StarStyle} 
+        onClick={clickRating} 
+        onMouseEnter={onHoverInn} 
+        onMouseLeave={onHoverOut}>
             { full ? <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
