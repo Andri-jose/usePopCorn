@@ -9,22 +9,24 @@ const containerStyle = {
 };
 
 
-const StarStyle = {
-    width : "30px",
-    height : "30px",
-    display : "inline-block",
-    cursor: "pointer",
-    
-}   
 
 
-export default function StarRating({maxRating = 5}){
+
+
+export default function StarRating({maxRating = 5, color = "#fcc419", size = 30}){
     const [rating, setRating] = useState(0);
     const [hover, setHover] = useState(0);
 
     function handleRating(x) {
         setRating(x);
     }
+
+    const textStyle = {
+      color,
+      fontSize : `${size}px`,
+    }
+
+  
 
     return(
         <div style={containerStyle}>
@@ -34,26 +36,39 @@ export default function StarRating({maxRating = 5}){
                  clickRating={() => handleRating(i + 1)} 
                  full={hover ? hover >= i + 1 : rating >= i + 1} 
                  onHoverInn={() => setHover( i + 1)}
-                 onHoverOut={() => setHover(0)}/>
+                 onHoverOut={() => setHover(0)}
+                 color ={color}
+                 size ={size}
+                 />
                  ))}
             </div>
-            <p>{hover || rating || ""}</p>
+            <p style={textStyle}>{hover || rating || ""}</p>
         </div>
        
     )
 }
 
-function Star({clickRating, full, onHoverInn, onHoverOut}){
+function Star({clickRating, full, onHoverInn, onHoverOut, color, size}){
+
+  const starStyle = {
+    width : `${size}px`,
+    height : `${size}px`,
+    display : "inline-block",
+    cursor: "pointer",
+   
+  } 
+
+
     return(
-        <span style={StarStyle} 
+        <span style={starStyle} 
         onClick={clickRating} 
         onMouseEnter={onHoverInn} 
         onMouseLeave={onHoverOut}>
             { full ? <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
-          fill="#000"
-          stroke="#000">
+          fill= {color}
+          stroke={color}>
             <path
               d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0
                1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 
@@ -65,7 +80,7 @@ function Star({clickRating, full, onHoverInn, onHoverOut}){
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke="#000"
+              stroke={color}
             >
               <path
                 strokeLinecap="round"
@@ -81,12 +96,3 @@ function Star({clickRating, full, onHoverInn, onHoverOut}){
 }
 
 
-
-/*
-
-
-
-EMPTY STAR
-
-
-*/
