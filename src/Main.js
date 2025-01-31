@@ -33,11 +33,13 @@ export function Box({ children }){
 }
 
 
-export function MoviesDetail({movies}){
+
+
+export function MoviesDetail({movies, handleMovie}){
   return(
-    <ul className="list">
+    <ul className="list list-movies">
     {movies?.map((movie) => (
-      <li key={movie.imdbID}>
+      <li key={movie.imdbID} onClick={() => handleMovie(movie.imdbID)}>
         <img src={movie.Poster} alt={`${movie.Title} poster`} />
         <h3>{movie.Title}</h3>
         <div>
@@ -48,20 +50,25 @@ export function MoviesDetail({movies}){
         </div>
       </li>
     ))}
-  </ul>
+    </ul>
   )
   
 }
 
 
 
-export function MoviesWatchedDetail({watched}){
+export function MoviesWatchedDetail({watched, handleMovie}){
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
   const avgRuntime = average(watched.map((movie) => movie.runtime));
+
+
+
+
   return(
     <div className="summary">
-      <h2>Movies you watched</h2>
+      {handleMovie ? (
+     <> <h2>Movies you watched</h2>
       <div>
           <p>
             <span>#️⃣</span>
@@ -79,8 +86,9 @@ export function MoviesWatchedDetail({watched}){
             <span>⏳</span>
             <span>{avgRuntime} min</span>
           </p>
-      </div>
-  </div>
+      </div> </> )
+       : (<h2>{watched.title}</h2>)}
+    </div>
   )
   
 }

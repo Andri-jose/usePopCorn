@@ -17,13 +17,45 @@ const KEY = "456851c1"
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
-  const query = "fvvsd";
-  const [loading, setloading] = useState(null);
+  // const tempQuery = "dog";
+  const [loading, setloading] = useState(false);
   const [error, setError] = useState(false);
+  const [query, setQuery] = useState("");
+  const [selectedId, setselectedId] = useState("");
+
+  
+function Load(){
+  return <p className="loader">Loading...</p>
+}
+
+function ErrorMessage({message}){
+  return <p className="error"><span>❌</span> {message}</p>
+}
+
+function handleMovie(movie) {
+  setselectedId((x) => (x === movie ? "" : movie));
+}
+
+function MovieSelected({selectedId, handleBackButton}){
+  return (
+    <div>
+        <div>{selectedId}</div>
+        <button className="btn-back" onClick={handleBackButton}>&larr;</button>
+    </div>
+    
+  ) 
+}
+
+function handleBackButton(){
+  setselectedId(null);
+}
+
 
   useEffect(function () {
     async function fetchMovies() {
-     try {setloading(true)
+     try {
+      setloading(true)
+      setError("")
       const res = await fetch(
         `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
       );
@@ -34,35 +66,49 @@ export default function App() {
       const data = await res.json();
       if(data.Response === "False") throw new Error("Movie not found!");
       setMovies(data.Search);
-      
+      console.log(data)
+     
 
       } catch (error) {
         setError(error.message)
-        console.log(error.message)
+        
       } finally{
         setloading(false);
       }
     }
+
+    if(!query.length){
+      setMovies([]);
+      setError("");
+      return
+    }
+
     fetchMovies();
-  }, []);
+  }, [query]);
   
 
   return (
     <>
        <Nav>
           <Logo />
-          <Search />
+          <Search query={query} setQuery={setQuery}/>
           <NumResults movies={movies} />  
        </Nav>
       <Main>
         <Box>
-          {!loading && !error && <MoviesDetail movies={movies}/>}
+          {!loading && !error && <MoviesDetail movies={movies} handleMovie={handleMovie}/>}
           {loading && <Load/>}
           {error && <ErrorMessage message={error} />}
         </Box>
         <Box>
-          <MoviesWatchedDetail watched={watched}/>
-          <WatchedList watched={watched}/> 
+          { selectedId ? <MovieSelected selectedId={selectedId} handleBackButton={handleBackButton} /> 
+            : 
+          <>
+            <MoviesWatchedDetail watched={watched} handleMovie={handleMovie} />
+            <WatchedList watched={watched}/>
+          </> 
+          }
+          
         </Box>
       </Main>
       
@@ -70,11 +116,3 @@ export default function App() {
   );
 }
 
-
-function Load(){
-  return <p className="loader">Loading...</p>
-}
-
-function ErrorMessage({message}){
-  return <p className="error"><span>❌</span> {message}</p>
-}
