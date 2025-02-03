@@ -100,8 +100,8 @@ export function WatchedList({ watched }) {
     <ul className="list">
       {watched.map((movie) => (
         <li key={movie.imdbID}>
-          <img src={movie.Poster} alt={`${movie.Title} poster`} />
-          <h3>{movie.Title}</h3>
+          <img src={movie.poster} alt={`${movie.title} poster`} />
+          <h3>{movie.title}</h3>
           <div>
             <p>
               <span>⭐️</span>
@@ -126,10 +126,23 @@ export function WatchedList({ watched }) {
 
 
 
-export function MovieSelected({selectedId, handleBackButton}){
+export function MovieSelected({selectedId, handleBackButton, onAddWatched}){
   const KEY = "456851c1";
   const [movie, setMovie] = useState({});
   const [loading, setloading] = useState(false);
+
+  function handleWatchedMovie(){
+    const newWatchedMovie = {
+      imdbID: selectedId,
+      title,
+      year,
+      poster,
+      imdbRating: Number(imdbRating),
+      runtime: Number(runtime.split("").at(0)),
+    }
+    onAddWatched(newWatchedMovie);
+    handleBackButton();
+  }
 
   
   const {
@@ -190,6 +203,7 @@ export function MovieSelected({selectedId, handleBackButton}){
          <section>
             <div className="rating">
                 <StarRating maxRating={10} size={24}/>
+                <button className="btn-add" onClick={handleWatchedMovie}>+ Add to list</button>
             </div>
             <p>
               <em>{plot}</em>

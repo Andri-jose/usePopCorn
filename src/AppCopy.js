@@ -11,7 +11,7 @@ export const average = (arr) =>
 export function Button({children, onClick}){
   return <button className="btn-toggle" onClick={onClick}>{children}</button>
 }
-
+ 
 export function Load(){
   return <p className="loader">Loading...</p>
 }
@@ -19,9 +19,8 @@ export function Load(){
 const KEY = "456851c1";
 
 export default function App() {
-  const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState(tempWatchedData);
-  // const tempQuery = "dog";
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
   const [loading, setloading] = useState(false);
   const [error, setError] = useState(false);
   const [query, setQuery] = useState("");
@@ -40,6 +39,12 @@ function handleMovie(movie) {
 function handleBackButton(){
   setselectedId(null);
 }
+
+function handleAddWatched(x) {
+  setWatched(watched => [...watched, x]); 
+}
+
+
 
 
   useEffect(function () {
@@ -92,7 +97,7 @@ function handleBackButton(){
           {error && <ErrorMessage message={error} />}
         </Box>
         <Box>
-          { selectedId ? <MovieSelected selectedId={selectedId} handleBackButton={handleBackButton} /> 
+          { selectedId ? <MovieSelected selectedId={selectedId} handleBackButton={handleBackButton} onAddWatched={handleAddWatched} /> 
             : 
           <>
             <MoviesWatchedDetail watched={watched} handleMovie={handleMovie} />
