@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { tempMovieData, tempWatchedData } from "./tempMovieData";
 import { Nav, NumResults, Search, Logo } from "./Nav";
-import { Main, Box, WatchedList, MoviesDetail, MoviesWatchedDetail } from "./Main";
+import { Main, Box, WatchedList, MoviesDetail, MoviesWatchedDetail, MovieSelected } from "./Main";
 
 
 
@@ -12,7 +12,11 @@ export function Button({children, onClick}){
   return <button className="btn-toggle" onClick={onClick}>{children}</button>
 }
 
-const KEY = "456851c1"
+export function Load(){
+  return <p className="loader">Loading...</p>
+}
+
+const KEY = "456851c1";
 
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
@@ -23,10 +27,6 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [selectedId, setselectedId] = useState("");
 
-  
-function Load(){
-  return <p className="loader">Loading...</p>
-}
 
 function ErrorMessage({message}){
   return <p className="error"><span>❌</span> {message}</p>
@@ -36,15 +36,6 @@ function handleMovie(movie) {
   setselectedId((x) => (x === movie ? "" : movie));
 }
 
-function MovieSelected({selectedId, handleBackButton}){
-  return (
-    <div>
-        <div>{selectedId}</div>
-        <button className="btn-back" onClick={handleBackButton}>&larr;</button>
-    </div>
-    
-  ) 
-}
 
 function handleBackButton(){
   setselectedId(null);

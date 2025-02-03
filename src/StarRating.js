@@ -3,15 +3,20 @@ import { useState } from "react";
 const containerStyle = {
     display : "flex",
     alignItems: "center",
-    width: "200px",
-    height: "100px",
     gap : "10px"
 };
 
 
+const starContainerStyle = {
+  display: "flex",
+}
 
 
-
+const textStyle = {
+  lineHeight: "1",
+  margin: "0",
+ 
+}
 
 export default function StarRating({maxRating = 5, color = "#fcc419", size = 30}){
     const [rating, setRating] = useState(0);
@@ -21,16 +26,10 @@ export default function StarRating({maxRating = 5, color = "#fcc419", size = 30}
         setRating(x);
     }
 
-    const textStyle = {
-      color,
-      fontSize : `${size}px`,
-    }
-
-  
 
     return(
         <div style={containerStyle}>
-            <div> 
+            <div style={starContainerStyle}> 
                {Array.from({length: maxRating}, (_, i) => (
                  <Star key={i} 
                  clickRating={() => handleRating(i + 1)} 
@@ -53,7 +52,7 @@ function Star({clickRating, full, onHoverInn, onHoverOut, color, size}){
   const starStyle = {
     width : `${size}px`,
     height : `${size}px`,
-    display : "inline-block",
+    display : "block",
     cursor: "pointer",
    
   } 
