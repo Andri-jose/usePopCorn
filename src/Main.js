@@ -126,10 +126,11 @@ export function WatchedList({ watched }) {
 
 
 
-export function MovieSelected({selectedId, handleBackButton, onAddWatched}){
+export function MovieSelected({selectedId, handleBackButton, onAddWatched, watched}){
   const KEY = "456851c1";
   const [movie, setMovie] = useState({});
   const [loading, setloading] = useState(false);
+  const [userRating, setuserRating] = useState("");
 
   function handleWatchedMovie(){
     const newWatchedMovie = {
@@ -139,10 +140,13 @@ export function MovieSelected({selectedId, handleBackButton, onAddWatched}){
       poster,
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split("").at(0)),
+      userRating,
     }
     onAddWatched(newWatchedMovie);
     handleBackButton();
   }
+
+  const exists = watched.some(obj => Object.values(obj).includes(selectedId));
 
   
   const {
@@ -201,10 +205,12 @@ export function MovieSelected({selectedId, handleBackButton, onAddWatched}){
             </div>
         </header>
          <section>
-            <div className="rating">
-                <StarRating maxRating={10} size={24}/>
-                <button className="btn-add" onClick={handleWatchedMovie}>+ Add to list</button>
-            </div>
+          {!exists &&
+             <div className="rating">
+                  <StarRating maxRating={10} size={24} onSetRating={setuserRating}/>
+                 {userRating > 0 && <button className="btn-add" onClick={handleWatchedMovie}>+ Add to list</button>}
+             </div>
+           }
             <p>
               <em>{plot}</em>
             </p>

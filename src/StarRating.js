@@ -18,15 +18,23 @@ const textStyle = {
  
 }
 
-export default function StarRating({maxRating = 5, color = "#fcc419", size = 30}){
+export default function StarRating({
+  maxRating = 5, 
+  color = "#fcc419", 
+  size = 30, 
+  className = "", 
+  messages = [], 
+  onSetRating
+}){
     const [rating, setRating] = useState(0);
     const [hover, setHover] = useState(0);
 
     function handleRating(x) {
         setRating(x);
+        onSetRating(x)
     }
 
-
+    
     return(
         <div style={containerStyle}>
             <div style={starContainerStyle}> 

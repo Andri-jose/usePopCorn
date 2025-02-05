@@ -25,7 +25,7 @@ export default function App() {
   const [error, setError] = useState(false);
   const [query, setQuery] = useState("");
   const [selectedId, setselectedId] = useState("");
-
+ 
 
 function ErrorMessage({message}){
   return <p className="error"><span>❌</span> {message}</p>
@@ -43,8 +43,6 @@ function handleBackButton(){
 function handleAddWatched(x) {
   setWatched(watched => [...watched, x]); 
 }
-
-
 
 
   useEffect(function () {
@@ -97,7 +95,7 @@ function handleAddWatched(x) {
           {error && <ErrorMessage message={error} />}
         </Box>
         <Box>
-          { selectedId ? <MovieSelected selectedId={selectedId} handleBackButton={handleBackButton} onAddWatched={handleAddWatched} /> 
+          { selectedId ? <MovieSelected watched={watched} selectedId={selectedId} handleBackButton={handleBackButton} onAddWatched={handleAddWatched} /> 
             : 
           <>
             <MoviesWatchedDetail watched={watched} handleMovie={handleMovie} />
