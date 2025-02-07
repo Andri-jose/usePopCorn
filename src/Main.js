@@ -63,12 +63,11 @@ export function MoviesWatchedDetail({watched, handleMovie}){
   const avgRuntime = average(watched.map((movie) => movie.runtime));
 
 
-
-
   return(
     <div className="summary">
       {handleMovie ? (
-     <> <h2>Movies you watched</h2>
+     <> 
+     <h2>Movies you watched</h2>
       <div>
           <p>
             <span>#️⃣</span>
@@ -76,17 +75,18 @@ export function MoviesWatchedDetail({watched, handleMovie}){
           </p>
           <p>
             <span>⭐️</span>
-            <span>{avgImdbRating}</span>
+            <span>{avgImdbRating.toFixed(2)}</span>
           </p>
           <p>
             <span>🌟</span>
-            <span>{avgUserRating}</span>
+            <span>{avgUserRating.toFixed(2)}</span>
           </p>
           <p>
             <span>⏳</span>
-            <span>{avgRuntime} min</span>
+            <span>{avgRuntime.toFixed(2)} min</span>
           </p>
-      </div> </> )
+      </div> 
+      </> )
        : (<h2>{watched.title}</h2>)}
     </div>
   )
@@ -94,7 +94,7 @@ export function MoviesWatchedDetail({watched, handleMovie}){
 }
 
 
-export function WatchedList({ watched }) {
+export function WatchedList({ watched, onDeleteWatched }) {
 
   return(
     <ul className="list">
@@ -115,6 +115,7 @@ export function WatchedList({ watched }) {
               <span>⏳</span>
               <span>{movie.runtime} min</span>
             </p>
+            <button className="btn-delete" onClick={() => onDeleteWatched(movie.imdbID)}> X </button>
           </div>
         </li>
       ))}
@@ -131,6 +132,7 @@ export function MovieSelected({selectedId, handleBackButton, onAddWatched, watch
   const [movie, setMovie] = useState({});
   const [loading, setloading] = useState(false);
   const [userRating, setuserRating] = useState("");
+  
 
   function handleWatchedMovie(){
     const newWatchedMovie = {
@@ -146,8 +148,12 @@ export function MovieSelected({selectedId, handleBackButton, onAddWatched, watch
     handleBackButton();
   }
 
-  const exists = watched.some(obj => Object.values(obj).includes(selectedId));
+  const exists = (watched.some(obj => Object.values(obj).includes(selectedId)));
 
+  const userRatingFromWatched = watched.find((x) => x.imdbID === selectedId)?.userRating;
+
+
+// tengo q buscar dentro de watched el select id q corresponda y seleccionar el userRating dentro de watched
   
   const {
     Title: title, 
@@ -162,6 +168,8 @@ export function MovieSelected({selectedId, handleBackButton, onAddWatched, watch
     Genre: genre,
     Awards: awards,
   } = movie;
+
+
  
 
   useEffect(function () {
@@ -198,19 +206,30 @@ export function MovieSelected({selectedId, handleBackButton, onAddWatched, watch
                   {released} &bull; {runtime}
                 </p>
                 <p>{genre}</p>
-                <p>
-                  <span>⭐</span>
-                  {imdbRating} IMDb rating
-                </p>  
+                  { exists  ?
+                    (
+                      <p>
+                        <span>⭐</span>
+                          {userRatingFromWatched} IMDb rating
+                      </p>
+                    )
+                    : 
+                    (
+                      <p>
+                        <span>⭐</span>
+                          {imdbRating} IMDb rating
+                      </p>
+                    )
+                  }  
             </div>
         </header>
          <section>
-          {!exists &&
-             <div className="rating">
-                  <StarRating maxRating={10} size={24} onSetRating={setuserRating}/>
-                 {userRating > 0 && <button className="btn-add" onClick={handleWatchedMovie}>+ Add to list</button>}
-             </div>
-           }
+            { !exists &&
+               <div className="rating">
+                    <StarRating maxRating={10} size={24} onSetRating={setuserRating}/>
+                   {userRating > 0 && <button className="btn-add" onClick={handleWatchedMovie}>+ Add to list</button>}
+               </div>
+            }
             <p>
               <em>{plot}</em>
             </p>
@@ -224,4 +243,4 @@ export function MovieSelected({selectedId, handleBackButton, onAddWatched, watch
     </div>
     
   ) 
-}
+}  
