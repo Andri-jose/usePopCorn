@@ -49,10 +49,11 @@ export function MoviesDetail({movies, handleMovie}){
           </p>
         </div>
       </li>
-    ))}
+    ))
+    }
     </ul>
   )
-  
+
 }
 
 
@@ -152,8 +153,6 @@ export function MovieSelected({selectedId, handleBackButton, onAddWatched, watch
 
   const userRatingFromWatched = watched.find((x) => x.imdbID === selectedId)?.userRating;
 
-
-// tengo q buscar dentro de watched el select id q corresponda y seleccionar el userRating dentro de watched
   
   const {
     Title: title, 
@@ -192,7 +191,17 @@ export function MovieSelected({selectedId, handleBackButton, onAddWatched, watch
     fetchSelectedID();
   }, [selectedId]);
 
-  return (
+
+  useEffect(function () {
+    if(!title) return;
+    document.title =`${title}` 
+
+    return function () {
+      document.title =`UsePopCorn`
+    };
+  }, [title])
+
+  return ( 
     <div className="details">
        {
         loading ? <Load /> :

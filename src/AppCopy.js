@@ -50,12 +50,15 @@ function handleDeleteWatched(id) {
 
 
   useEffect(function () {
+    const controller = new AbortController();
+
     async function fetchMovies() {
      try {
       setloading(true)
       setError("")
       const res = await fetch(
-        `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+        `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
+        {signal: controller.signal}
       );
 
       if(!res.ok) 
@@ -66,9 +69,12 @@ function handleDeleteWatched(id) {
       setMovies(data.Search);
       console.log(data)
      
-
+      setError("")
       } catch (error) {
-        setError(error.message)
+
+        if(error.name !== "AbortError"){
+          setError(error.message); 
+        }
         
       } finally{
         setloading(false);
@@ -82,6 +88,11 @@ function handleDeleteWatched(id) {
     }
 
     fetchMovies();
+
+    return function(){
+      controller.abort();
+    };
+
   }, [query]);
   
 
