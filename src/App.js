@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-import { Nav, NumResults, Search, Logo } from "./Nav";
-import { Main, Box, WatchedList, MoviesDetail, MoviesWatchedDetail, MovieSelected } from "./Main";
+import { Nav } from "./Nav";
+import { MovieSelected } from "./MovieSelected";
+import {WatchedList} from "./WatchedList";
+import { MoviesWatchedDetail } from "./MoviesWatchedDetail";
+import { Box } from "./Box";
+import MovieList from "./MovieList";
 
 
 
@@ -10,30 +14,20 @@ export const average = (arr) =>
 export function Button({children, onClick}){
   return <button className="btn-toggle" onClick={onClick}>{children}</button>
 }
- 
-export function Load(){
-  return <p className="loader">Loading...</p>
-}
 
-const KEY = "456851c1";
+ 
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
+  const [selectedId, setselectedId] = useState("");
+  const [query, setQuery] = useState("");
   const [loading, setloading] = useState(false);
   const [error, setError] = useState(false);
-  const [query, setQuery] = useState("");
-  const [selectedId, setselectedId] = useState("");
- 
-
-function ErrorMessage({message}){
-  return <p className="error"><span>❌</span> {message}</p>
-}
-
+  const [watched, setWatched] = useState([]);
+  
 function handleMovie(movie) {
   setselectedId((x) => (x === movie ? "" : movie));
-}
-
+}  
 
 function handleBackButton(){
   setselectedId(null);
@@ -56,66 +50,20 @@ useEffect(function() {
 }, []);
 
 
-  useEffect(function () {
-    const controller = new AbortController();
-
-    async function fetchMovies() {
-     try {
-      setloading(true)
-      setError("")
-      const res = await fetch(
-        `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
-        {signal: controller.signal}
-      );
-
-      if(!res.ok) 
-        throw new Error("something went wrong");
-
-      const data = await res.json();
-      if(data.Response === "False") throw new Error("Movie not found!");
-      setMovies(data.Search);
-      console.log(data)
-     
-      setError("")
-      } catch (error) {
-
-        if(error.name !== "AbortError"){
-          setError(error.message); 
-        }
-        
-      } finally{
-        setloading(false);
-      }
-    }
-
-    if(!query.length){
-      setMovies([]);
-      setError("");
-      return
-    }
-
-    fetchMovies();
-
-    return function(){
-      controller.abort();
-    };
-
-  }, [query]);
-  
-
   return (
     <>
-       <Nav>
-          <Logo />
-          <Search query={query} setQuery={setQuery}/>
-          <NumResults movies={movies} />  
-       </Nav>
-      <Main>
-        <Box>
-          {!loading && !error && <MoviesDetail movies={movies} handleMovie={handleMovie}/>}
-          {loading && <Load/>}
-          {error && <ErrorMessage message={error} />}
-        </Box>
+      <Nav movies={movies} query={query} setQuery={setQuery}/>
+      <main className="main">
+        <MovieList 
+        query={query}
+        movies={movies} 
+        setMovies={setMovies} 
+        loading={loading}
+        setloading={setloading}
+        error={error}
+        setError={setError}
+        handleMovie={handleMovie}
+        />
         <Box>
           { selectedId ? <MovieSelected watched={watched} selectedId={selectedId} handleBackButton={handleBackButton} onAddWatched={handleAddWatched} /> 
             : 
@@ -126,7 +74,7 @@ useEffect(function() {
           }
           
         </Box>
-      </Main>
+      </main>
       
     </>
   );
