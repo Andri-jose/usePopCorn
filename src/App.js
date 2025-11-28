@@ -3,7 +3,6 @@ import { Nav } from "./Nav";
 import { MovieSelected } from "./MovieSelected";
 import {WatchedList} from "./WatchedList";
 import { MoviesWatchedDetail } from "./MoviesWatchedDetail";
-import { Box } from "./Box";
 import MovieList from "./MovieList";
 
 
@@ -64,7 +63,7 @@ useEffect(function() {
         setError={setError}
         handleMovie={handleMovie}
         />
-        <Box>
+        <div className="box">
           { selectedId ? <MovieSelected watched={watched} selectedId={selectedId} handleBackButton={handleBackButton} onAddWatched={handleAddWatched} /> 
             : 
           <>
@@ -73,7 +72,7 @@ useEffect(function() {
           </> 
           }
           
-        </Box>
+        </div>
       </main>
       
     </>

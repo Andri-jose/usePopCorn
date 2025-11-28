@@ -164,7 +164,11 @@ body {
   transition: all 0.3s;
 }
 
-.list .list-movies li:hover {
+.firstBox {
+  cursor: pointer;
+}
+
+.list .list-movies  li:hover {
   background-color: var(--color-background-100);
 }
 

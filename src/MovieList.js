@@ -55,7 +55,7 @@ export default function MovieList({movies, setMovies, query, loading, setloading
   
   
     return (
-        <div className="movie-list">
+        <div className="box .firstBox">
             <div>
                 {!loading && !error && <MoviesDetail movies={movies} handleMovie={handleMovie}/>}
                 {loading && <Load/>}
